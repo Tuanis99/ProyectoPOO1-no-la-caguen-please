@@ -14,9 +14,9 @@ public class Horario {
   private Time horaApertura;
   private Time horaCierre;
 
-    public Horario(int idHorario) {
-        this.idHorario = idHorario;
-    }
+  public Horario(int idHorario) {
+    this.idHorario = idHorario;
+  }
 
     
   

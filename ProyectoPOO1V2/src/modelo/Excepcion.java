@@ -1,7 +1,7 @@
 package modelo;
 
 import java.sql.Date;
-import java.sql.Time;
+
 
 /**
  *
@@ -9,61 +9,29 @@ import java.sql.Time;
  */
 public class Excepcion {
 
+ 
+  private String inicioExcepcion;
+  private String finalExcepcion;
+    
   
-  private Date fecha;
-  private Time horaInicio;
-  private Time horaFinal;
-  private String motivo;
-
-  
-  public Excepcion(Date fecha, Time horaInicio, Time horaFinal, String motivo) {
-    this.fecha = fecha;
-    this.horaInicio = horaInicio;
-    this.horaFinal = horaFinal;
-    this.motivo = motivo;
+  public Excepcion(String pInicioExcepcion, String pFinalExcepcion) {
+    this.inicioExcepcion = pInicioExcepcion;
+    this.finalExcepcion =pFinalExcepcion;
   }
 
-  public Date getFecha() {
-    return fecha;
-  }
+    public String getInicioExcepcion() {
+        return inicioExcepcion;
+    }
 
-  
-  public void setFecha(Date fecha) {
-    this.fecha = fecha;
-  }
+    public void setInicioExcepcion(String inicioExcepcion) {
+        this.inicioExcepcion = inicioExcepcion;
+    }
 
-  
-  public Time getHoraInicio() {
-    return horaInicio;
-  }
+    public String getFinalExcepcion() {
+        return finalExcepcion;
+    }
 
-  
-  public void setHoraInicio(Time horaInicio) {
-    this.horaInicio = horaInicio;
-  }
-
-  
-  public Time getHoraFinal() {
-    return horaFinal;
-  }
-
-  
-  public void setHoraFinal(Time horaFinal) {
-    this.horaFinal = horaFinal;
-  }
-
-  
-  public String getMotivo() {
-    return motivo;
-  }
-
-  
-  public void setMotivo(String motivo) {
-    this.motivo = motivo;
-  }
-  
-  
-  
-  
-  
+    public void setFinalExcepcion(String finalExcepcion) {
+        this.finalExcepcion = finalExcepcion;
+    }
 }

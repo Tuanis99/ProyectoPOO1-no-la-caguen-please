@@ -12,8 +12,10 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import modelo.Estado;
+import modelo.Excepcion;
 import modelo.Horario;
 import modelo.Recurso;
+import modelo.Reserva;
 import modelo.Sala;
 
 /**
@@ -23,14 +25,7 @@ import modelo.Sala;
 public class SalaDAO {
   private static ResultSet resultadoConsulta;
   
-    /**
-     *
-     * @param sala
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public boolean agregarSala(Sala sala) throws SQLException,
+  public boolean agregarSala(Sala sala) throws SQLException,
       ClassNotFoundException {
     try {
       CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call agregarSala"
@@ -45,14 +40,9 @@ public class SalaDAO {
     }
     return true;    
   }
+ 
   
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public ArrayList<Sala> consultarSalasMasUtilizadas()throws SQLException,
+  public ArrayList<Sala> consultarSalasMasUtilizadas()throws SQLException,
       ClassNotFoundException{
     resultadoConsulta = ConexionSQL.createConsult("exec salasDisp "+";");
     ArrayList<Sala> salas = new ArrayList<Sala>();
@@ -68,31 +58,7 @@ public class SalaDAO {
     return salas;
   }
   
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public ArrayList<String> cargarComboRecursos()throws SQLException,
-      ClassNotFoundException{
-    resultadoConsulta = ConexionSQL.createConsult("exec recursos "+";");
-    ArrayList<String> recursos = new ArrayList<String>();
-    while (resultadoConsulta.next()) {
-       
-      String recurso = resultadoConsulta.getString(2);
-      recursos.add(recurso);
-    }
-    return recursos;
-  }
-  
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public ArrayList<String> cargarComboEstado()throws SQLException,
+   public ArrayList<String> cargarComboEstado()throws SQLException,
       ClassNotFoundException{
     resultadoConsulta = ConexionSQL.createConsult("exec estados "+";");
     ArrayList<String> estados = new ArrayList<String>();
@@ -104,13 +70,19 @@ public class SalaDAO {
     return estados;
   }
   
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public ArrayList<Horario> consultarHorariosDisponibles() throws SQLException,
+  public ArrayList<String> cargarComboRecursos()throws SQLException,
+      ClassNotFoundException{
+    resultadoConsulta = ConexionSQL.createConsult("exec recursos "+";");
+    ArrayList<String> recursos = new ArrayList<String>();
+    while (resultadoConsulta.next()) {
+       
+      String recurso = resultadoConsulta.getString(2);
+      recursos.add(recurso);
+    }
+    return recursos;
+  }
+  
+  public ArrayList<Horario> consultarHorariosDisponibles() throws SQLException,
           ClassNotFoundException{
       resultadoConsulta = ConexionSQL.createConsult("exec tablaHorarios;");
       ArrayList<Horario> horarios = new ArrayList<Horario>();
@@ -126,13 +98,7 @@ public class SalaDAO {
       return horarios;
   }
   
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public ArrayList<String> cargarComboHorarios() throws SQLException, ClassNotFoundException{
+  public ArrayList<String> cargarComboHorarios() throws SQLException, ClassNotFoundException{
     resultadoConsulta =  ConexionSQL.createConsult("exec consultarHorarios;");
     ArrayList<String> horarios = new ArrayList<String>();
     while (resultadoConsulta.next()) {
@@ -142,31 +108,18 @@ public class SalaDAO {
     return horarios;
   }
   
-    /**
-     *
-     * @param sala
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public Sala verificarSala(Sala sala) throws SQLException, ClassNotFoundException{
-      ArrayList <Sala> salas = cargarSalasVerificacion();
+  public Sala verificarSala(Sala sala) throws SQLException, ClassNotFoundException{
+      ArrayList <Sala> salas= cargarSalasVerificacion();
       int cantidad = salas.size();   
       for (int i = 0; i<cantidad; i++){
         if(sala.equalsSala(salas.get(i))){
             return sala;
         }
-      }
+  }
       return null;
   }
   
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public ArrayList<Sala> cargarSalasVerificacion() throws SQLException, ClassNotFoundException{
+   public ArrayList<Sala> cargarSalasVerificacion() throws SQLException, ClassNotFoundException{
       resultadoConsulta = ConexionSQL.createConsult("exec cargarSalas;");
       ArrayList <Sala> salas = new ArrayList<Sala>();
       while (resultadoConsulta.next()){
@@ -175,14 +128,8 @@ public class SalaDAO {
       }
       return salas;
   }
-  
-    /**
-     *
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public ArrayList<String> cargarSalas() throws SQLException, ClassNotFoundException{
+      
+  public ArrayList<String> cargarSalas() throws SQLException, ClassNotFoundException{
       resultadoConsulta = ConexionSQL.createConsult("exec cargarSalas;");
       ArrayList <String> salas = new ArrayList<String>();
       while (resultadoConsulta.next()){
@@ -192,15 +139,7 @@ public class SalaDAO {
       return salas;
   }
   
-    /**
-     *
-     * @param sala
-     * @param horario
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
-    public boolean agregarHorario(Sala sala, Horario horario) throws SQLException, ClassNotFoundException{
+  public boolean agregarHorario(Sala sala, Horario horario) throws SQLException, ClassNotFoundException{
       try{
         CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call agregarHorarioSala"
           + "(?,?)}");
@@ -214,13 +153,80 @@ public class SalaDAO {
     return true;    
   }
   
-    /**
-     *
-     * @param sala
-     * @return
-     * @throws SQLException
-     * @throws ClassNotFoundException
-     */
+  
+  public ArrayList<Sala> consultarSala(String idSala) throws SQLException, ClassNotFoundException{
+    try{                
+      resultadoConsulta = ConexionSQL.createConsult("exec consultarSala "+idSala+";");
+      ArrayList<Sala> salas = new ArrayList<Sala>();
+      while (resultadoConsulta.next()) {
+        Sala sala = new Sala(resultadoConsulta.getString(1), resultadoConsulta.getString(2), 
+            resultadoConsulta.getInt(3), resultadoConsulta.getString(4));
+        salas.add(sala);
+      }  
+      return salas;
+    }
+    catch(ClassNotFoundException | SQLException e) {
+      return null;
+    }    
+  }
+  
+  
+  public ArrayList<Horario> consultarSalaHorarios(String idSala) throws SQLException, 
+      ClassNotFoundException{
+    try{                
+      resultadoConsulta = ConexionSQL.createConsult("exec consultarSalaHorario "+idSala+";");
+      ArrayList<Horario> horariosSala = new ArrayList<Horario>();
+      while (resultadoConsulta.next()) {
+        Horario horario = new Horario(resultadoConsulta.getString(1), resultadoConsulta.getTime(2), 
+            resultadoConsulta.getTime(3));
+        horariosSala.add(horario);
+      }  
+      return horariosSala;
+    }
+    catch(ClassNotFoundException | SQLException e) {
+      return null;
+    }    
+  } 
+  
+  
+  public ArrayList<Excepcion> consultarSalaExcepcionesHorario(String idSala) throws SQLException,
+      ClassNotFoundException{
+    try{                
+      resultadoConsulta = ConexionSQL.createConsult("exec consultarSalaExcepcionHorario "+idSala+";");
+      ArrayList<Excepcion> excepcionesHorarioSala = new ArrayList<Excepcion>();
+      while (resultadoConsulta.next()) {
+        Excepcion excepcionHorario = new Excepcion(resultadoConsulta.getString(1), 
+            resultadoConsulta.getString(2));
+        excepcionesHorarioSala.add(excepcionHorario);                         
+      }  
+      return excepcionesHorarioSala;
+    }
+    catch(ClassNotFoundException | SQLException e) {
+      return null;
+    }    
+  } 
+           
+  
+  public ArrayList<Reserva> consultarSalaReservas(String idSala) throws SQLException,
+      ClassNotFoundException{
+    try{                
+      resultadoConsulta = ConexionSQL.createConsult("exec consultarSalaReservas "+idSala+";");
+      ArrayList<Reserva> reservasSala = new ArrayList<Reserva>();
+      while (resultadoConsulta.next()) {
+        Reserva reservaSala = new Reserva(resultadoConsulta.getInt(1), 
+            resultadoConsulta.getString(2), resultadoConsulta.getDate(3),
+            resultadoConsulta.getDate(4), resultadoConsulta.getTime(5),
+            resultadoConsulta.getTime(6), resultadoConsulta.getBoolean(7),
+            resultadoConsulta.getString(8), resultadoConsulta.getInt(9));
+        reservasSala.add(reservaSala);                         
+      }  
+      return reservasSala;
+    }
+    catch(ClassNotFoundException | SQLException e) {
+      return null;
+    }    
+  } 
+    
     public boolean idModificar(Sala sala) throws SQLException, ClassNotFoundException{
       try{
           CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call guardarID"

@@ -5,9 +5,7 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import modelo.Participante;
 import modelo.Reserva;
-import modelo.Sala;
 
 
 /**
@@ -34,138 +32,58 @@ public class ReservaDAO {
   }
   
   
- public boolean agregarReserva(Reserva reserva) throws SQLException,
-      ClassNotFoundException {
-    try {
-      CallableStatement entrada = ConexionSQL.getConexionSQL().prepareCall("{call "
-          + "registrarReserva (?,?,?,?,?,?)}");
-      entrada.setString(1, reserva.getIdSala());
-      entrada.setString(2, reserva.getAsunto());
-      entrada.setDate(3, reserva.getFechaUso());
-      entrada.setTime(4, reserva.getHoraInicio());
-      entrada.setTime(5, reserva.getHoraFin());
-      entrada.setInt(6, reserva.getOrganizador().getCarnet());
-      entrada.execute();
+  public ArrayList<Reserva> consultarReservasCancelables(int carnet)throws SQLException,
+      ClassNotFoundException{
+    resultadoConsulta = ConexionSQL.createConsult("exec "
+        + "consultarOrganizadorReservasCancelables   "+carnet+";");
+    ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+    while (resultadoConsulta.next()) {
+      Reserva reservaEncontrada = new Reserva(resultadoConsulta.getInt(1),
+        resultadoConsulta.getDate(2), resultadoConsulta.getTime(3),
+        resultadoConsulta.getTime(4), resultadoConsulta.getString(5));
+      reservas.add(reservaEncontrada);
     }
-    catch(ClassNotFoundException | SQLException e) {
-      return false;
-    }
-    return true;    
+    return reservas;
   }
-
-
-  public int validarUsuario(int carnet) throws SQLException,
-          ClassNotFoundException{
-      resultadoConsulta = ConexionSQL.createConsult("exec validarEstudiante "
-        +carnet+";");
-      int bandera = 0;
-      while (resultadoConsulta.next()){
-          bandera = resultadoConsulta.getInt(1);        
-      }    
+  
+  
+  public ArrayList<Reserva> cargarComboBoxId(int carnet)throws SQLException,
+      ClassNotFoundException{
+    resultadoConsulta = ConexionSQL.createConsult("exec cargarComboBox "+carnet+";");
+    ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+    while (resultadoConsulta.next()) {
+      Reserva reservaEncontrada = new Reserva(resultadoConsulta.getInt(1));
+      reservas.add(reservaEncontrada);
+    }
+    return reservas;
+  }
+  
+  
+  public boolean validarEstadoReserva(int idReserva)throws SQLException,
+      ClassNotFoundException{
+    resultadoConsulta = ConexionSQL.createConsult("exec validarEstadoReserva  "+idReserva+";");
+    boolean bandera = false;
+    while (resultadoConsulta.next()) {
+      int resultado =resultadoConsulta.getInt(1);
+      if (resultado == 1){
+        bandera = true;
+      }
+    }
+    return bandera;
+  }
+  
+  
+  public boolean cancelarReserva(int idReserva)throws SQLException,
+      ClassNotFoundException{
+      boolean bandera;
+      try{
+      resultadoConsulta = ConexionSQL.createConsult("exec cancelarReserva "+idReserva+";");
+      bandera = true;
       return bandera;
-  } 
-  
-  
-  public ArrayList<Sala> consultarSalasMasUtilizadas()throws SQLException,
-      ClassNotFoundException{
-    resultadoConsulta = ConexionSQL.createConsult("exec salasDisp "+";");
-    ArrayList<Sala> salas = new ArrayList<Sala>();
-    while (resultadoConsulta.next()) {
-       
-      String idSala = resultadoConsulta.getString(1);
-      String ubicacion = resultadoConsulta.getString(2);
-      int capacidad = resultadoConsulta.getInt(3);
-      String estado = resultadoConsulta.getString(4);
-      Sala sala = new Sala(idSala, ubicacion, capacidad, estado);
-      salas.add(sala);
-    }
-    return salas;
+     }
+     catch(ClassNotFoundException e){
+       bandera = false;
+       return bandera;
+     }
   }
-  
-  
-  public ArrayList<String> cargarComboRecursos()throws SQLException,
-      ClassNotFoundException{
-    resultadoConsulta = ConexionSQL.createConsult("exec recursos "+";");
-    ArrayList<String> recursos = new ArrayList<String>();
-    while (resultadoConsulta.next()) {
-       
-      String recurso = resultadoConsulta.getString(2);
-      recursos.add(recurso);
-    }
-    return recursos;
-  }
-  
-  
-  public ArrayList<String> cargarComboSalasReservas()throws SQLException,
-      ClassNotFoundException{
-    resultadoConsulta = ConexionSQL.createConsult("exec salasDisp "+";");
-    ArrayList<String> salas = new ArrayList<String>();
-    while (resultadoConsulta.next()) {
-       
-      String idSala = resultadoConsulta.getString(1);
-      salas.add(idSala);
-    }
-    return salas;
-  }
-  
-  
- public void agregarParticipante(Participante participante) throws SQLException,
-      ClassNotFoundException {
-    try {
-      CallableStatement entrada = ConexionSQL.getConexionSQL().prepareCall("{call "
-          + "registrarParticipante (?,?,?,?)}");
-      entrada.setString(1, participante.getNombre());
-      entrada.setString(2, participante.getPrimerApellido());
-      entrada.setString(3, participante.getSegundoApellido());
-      entrada.setString(4, participante.getCorreo());
-      entrada.execute();
-    }
-    catch(ClassNotFoundException | SQLException e) {     
-    }   
-  }
- 
- 
-  public ArrayList<Participante> consultarParticipantes()throws SQLException,
-      ClassNotFoundException{
-    resultadoConsulta = ConexionSQL.createConsult("exec consularParticipantes "+";");
-    ArrayList<Participante> participantes = new ArrayList<Participante>();
-    while (resultadoConsulta.next()) {  
-      int id = resultadoConsulta.getInt(1);
-      String nombre = resultadoConsulta.getString(2);
-      String primerApellido = resultadoConsulta.getString(3);
-      String segundoApellido = resultadoConsulta.getString(4);
-      String correo = resultadoConsulta.getString(5);
-      Participante participante = new Participante(nombre,primerApellido,segundoApellido,correo,id);
-      participantes.add(participante);
-    }
-    return participantes;
-  }
-  
-  
-  public ArrayList<Integer> cargarComboReservasParticipante(int carnet)throws SQLException,
-      ClassNotFoundException{
-    resultadoConsulta = ConexionSQL.createConsult("exec reservasDispOrganizador "
-        +carnet+";");
-    ArrayList<Integer> ids = new ArrayList<>();
-    while (resultadoConsulta.next()) {
-       
-      int id = resultadoConsulta.getInt(1);
-      ids.add(id);
-    }
-    return ids;
-  }
-  
-  
- public void agregarParticipanteReserva(int idReserva, int idParticipante) throws SQLException,
-      ClassNotFoundException {
-    try {
-      CallableStatement entrada = ConexionSQL.getConexionSQL().prepareCall("{call "
-          + "insertarReservaParticipante (?,?)}");
-      entrada.setInt(1, idParticipante);
-      entrada.setInt(2, idReserva);
-      entrada.execute();
-    }
-    catch(ClassNotFoundException | SQLException e) {     
-    }   
-  }  
 }

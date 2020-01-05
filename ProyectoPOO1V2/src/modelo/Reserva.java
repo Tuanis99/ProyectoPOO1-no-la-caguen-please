@@ -12,6 +12,7 @@ import modelo.Incidente;
 public class Reserva {
 
   private Estudiante organizador;
+  private int idOrganizador;
   private String asunto;
   private String estado;
   private Date fechaSolicitud;
@@ -26,6 +27,11 @@ public class Reserva {
 
  
   public Reserva() {
+  }
+  
+  
+  public Reserva(int pId){
+    this.id = pId;
   }
    
   
@@ -51,7 +57,34 @@ public class Reserva {
         this.idSala = idSala;
     }
   
-  
+  public Reserva(int pId, String pAsunto, Date pFechaSolicitud, Date pFechaUso, Time pHoraInicio,
+      Time pHoraFin, boolean pIsExitosa, String pEstado, int idOrganizador){
+    this.id = pId;
+    this.asunto = pAsunto;
+    this.fechaSolicitud = pFechaSolicitud;
+    this.fechaUso = pFechaUso;
+    this.horaInicio = pHoraInicio;
+    this.horaFin = pHoraFin;
+    this.isExitosa = pIsExitosa;
+    this.estado = pEstado;
+    this.idOrganizador = idOrganizador; 
+  }
+
+    public Estudiante getOrganizador() {
+        return organizador;
+    }
+
+    public void setOrganizador(Estudiante organizador) {
+        this.organizador = organizador;
+    }
+
+    public int getIdOrganizador() {
+        return idOrganizador;
+    }
+
+    public void setIdOrganizador(int idOrganizador) {
+        this.idOrganizador = idOrganizador;
+    }  
 
   
   public Reserva(int pId, String pAsunto, Date pFechaSolicitud, Date pFechaUso, Time pHoraInicio,
@@ -68,7 +101,16 @@ public class Reserva {
     this.isExitosa = pIsExitosa;
     this.incidentesReserva =  pInicdentesReserva; 
   }
-
+  
+  
+  public Reserva(int pId, Date pFechaUso, Time pHoraInicio,Time pHoraFin, String pIdSala){
+    this.id = pId;
+    this.fechaUso = pFechaUso;
+    this.horaInicio = pHoraInicio;
+    this.horaFin = pHoraFin;
+    this.idSala = pIdSala;
+  }
+  
   
     public String getAsunto() {
         return asunto;
@@ -162,17 +204,7 @@ public class Reserva {
   public boolean getIsExitosa() {
     return isExitosa;
   }
-
-    public Estudiante getOrganizador() {
-        return organizador;
-    }
-
-    public void setOrganizador(Estudiante organizador) {
-        this.organizador = organizador;
-    }
-
-
-    
+   
     
   public ArrayList<Incidente> agregarIncidente(Incidente incidente){
     incidentesReserva.add(incidente);

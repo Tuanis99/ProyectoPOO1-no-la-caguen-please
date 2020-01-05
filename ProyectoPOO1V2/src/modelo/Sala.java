@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -20,10 +20,10 @@ public class Sala {
 
   public Sala() {
   }
-  
-  public Sala(String idSala) {
-    this.idSala = idSala;
-  }
+
+    public Sala(String idSala) {
+        this.idSala = idSala;
+    }
 
     public Sala(int numero) {
         this.numero = numero;
@@ -33,13 +33,13 @@ public class Sala {
         this.ubicacion = ubicacion;
         this.capacidad = capacidad;
     }
-  
-  
-  public Sala(String idSala, String ubicacion) {
-    this.idSala = idSala;
-    this.ubicacion = ubicacion;
-  }
 
+    public Sala(String idSala, String ubicacion) {
+        this.idSala = idSala;
+        this.ubicacion = ubicacion;
+    }
+    
+    
   
   public Sala(String pUbicacion, int pCapacidad, int pNumero) {
     this.ubicacion = pUbicacion;
@@ -112,7 +112,7 @@ public class Sala {
     this.califacion = pCalifacion;
   }
   
-    public boolean equalsSala(Object o){
+  public boolean equalsSala(Object o){
     if (this == o){
       return true;
     }

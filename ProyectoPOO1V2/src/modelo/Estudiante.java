@@ -4,7 +4,9 @@ package modelo;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-
+import modelo.Horario;
+import modelo.Reserva;
+import modelo.Incidente;
 
 /**
  *
@@ -65,11 +67,6 @@ public class Estudiante {
     this.telefono = pTelefono;
     this.reservasEstudiante = pReservasEstudiante;
   }
-
-    public Estudiante(int carnet) {
-        this.carnet = carnet;
-    }
-  
   
   
   public int getCarnet() {
