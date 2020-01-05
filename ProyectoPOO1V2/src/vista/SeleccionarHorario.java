@@ -34,6 +34,7 @@ public class SeleccionarHorario extends javax.swing.JFrame {
         cbxHorario = new javax.swing.JComboBox<>();
         lbHorario = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,6 +66,8 @@ public class SeleccionarHorario extends javax.swing.JFrame {
 
         btnAceptar.setText("Aceptar");
 
+        btnVolver.setText("Volver");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,7 +88,9 @@ public class SeleccionarHorario extends javax.swing.JFrame {
                             .addComponent(cbxIdSalas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
-                                .addComponent(btnAceptar)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnVolver)
+                                    .addComponent(btnAceptar))))))
                 .addContainerGap(517, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -108,7 +113,9 @@ public class SeleccionarHorario extends javax.swing.JFrame {
                     .addComponent(cbxHorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addComponent(btnAceptar)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnVolver)
+                .addContainerGap(55, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -149,6 +156,7 @@ public class SeleccionarHorario extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(SeleccionarHorario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -160,6 +168,7 @@ public class SeleccionarHorario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAceptar;
+    public javax.swing.JButton btnVolver;
     public javax.swing.JComboBox<String> cbxHorario;
     public javax.swing.JComboBox<String> cbxIdSalas;
     public javax.swing.JTable horariosTable;

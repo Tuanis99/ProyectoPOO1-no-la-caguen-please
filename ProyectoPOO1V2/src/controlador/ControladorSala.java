@@ -74,10 +74,10 @@ public class ControladorSala implements ActionListener{
     String ubicacion = vista.txtUbicacion.getText();
     String capacidadString = vista.txtCapacidad.getText();
     int capacidad = Integer.parseInt(capacidadString);
-    String numeroString = vista.txtNumero.getText();
-    int numero = Integer.parseInt(numeroString);
+    //String numeroString = vista.txtNumero.getText();
+    //int numero = Integer.parseInt(numeroString);
     
-    modelo = new Sala(ubicacion,capacidad,numero);
+    modelo = new Sala(ubicacion,capacidad);
     boolean salaActual = dao.agregarSala(modelo);
     if (salaActual){
       JOptionPane.showMessageDialog(vista, "La sala ha sido ingresada correctamente");

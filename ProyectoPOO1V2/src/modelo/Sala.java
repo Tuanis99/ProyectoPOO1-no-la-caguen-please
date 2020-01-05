@@ -28,6 +28,11 @@ public class Sala {
     public Sala(int numero) {
         this.numero = numero;
     }
+
+    public Sala(String ubicacion, int capacidad) {
+        this.ubicacion = ubicacion;
+        this.capacidad = capacidad;
+    }
   
   
   public Sala(String idSala, String ubicacion) {

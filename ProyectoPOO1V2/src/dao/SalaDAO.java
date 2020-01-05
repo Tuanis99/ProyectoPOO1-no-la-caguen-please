@@ -23,14 +23,21 @@ import modelo.Sala;
 public class SalaDAO {
   private static ResultSet resultadoConsulta;
   
-  public boolean agregarSala(Sala sala) throws SQLException,
+    /**
+     *
+     * @param sala
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public boolean agregarSala(Sala sala) throws SQLException,
       ClassNotFoundException {
     try {
       CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call agregarSala"
-          + "(?,?,?)}");
+          + "(?,?)}");
       entry.setString(1, sala.getUbicacion());
       entry.setInt(2, sala.getCapacidad()); 
-      entry.setInt(3, sala.getNumero());
+      //entry.setInt(3, sala.getNumero());
       entry.execute();
     }
     catch(ClassNotFoundException | SQLException e) {
@@ -39,8 +46,13 @@ public class SalaDAO {
     return true;    
   }
   
-  
-  public ArrayList<Sala> consultarSalasMasUtilizadas()throws SQLException,
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<Sala> consultarSalasMasUtilizadas()throws SQLException,
       ClassNotFoundException{
     resultadoConsulta = ConexionSQL.createConsult("exec salasDisp "+";");
     ArrayList<Sala> salas = new ArrayList<Sala>();
@@ -56,8 +68,13 @@ public class SalaDAO {
     return salas;
   }
   
-  
-  public ArrayList<String> cargarComboRecursos()throws SQLException,
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<String> cargarComboRecursos()throws SQLException,
       ClassNotFoundException{
     resultadoConsulta = ConexionSQL.createConsult("exec recursos "+";");
     ArrayList<String> recursos = new ArrayList<String>();
@@ -69,7 +86,13 @@ public class SalaDAO {
     return recursos;
   }
   
-  public ArrayList<String> cargarComboEstado()throws SQLException,
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<String> cargarComboEstado()throws SQLException,
       ClassNotFoundException{
     resultadoConsulta = ConexionSQL.createConsult("exec estados "+";");
     ArrayList<String> estados = new ArrayList<String>();
@@ -81,7 +104,13 @@ public class SalaDAO {
     return estados;
   }
   
-  public ArrayList<Horario> consultarHorariosDisponibles() throws SQLException,
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<Horario> consultarHorariosDisponibles() throws SQLException,
           ClassNotFoundException{
       resultadoConsulta = ConexionSQL.createConsult("exec tablaHorarios;");
       ArrayList<Horario> horarios = new ArrayList<Horario>();
@@ -97,7 +126,13 @@ public class SalaDAO {
       return horarios;
   }
   
-  public ArrayList<String> cargarComboHorarios() throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<String> cargarComboHorarios() throws SQLException, ClassNotFoundException{
     resultadoConsulta =  ConexionSQL.createConsult("exec consultarHorarios;");
     ArrayList<String> horarios = new ArrayList<String>();
     while (resultadoConsulta.next()) {
@@ -107,7 +142,14 @@ public class SalaDAO {
     return horarios;
   }
   
-  public Sala verificarSala(Sala sala) throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @param sala
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public Sala verificarSala(Sala sala) throws SQLException, ClassNotFoundException{
       ArrayList <Sala> salas = cargarSalasVerificacion();
       int cantidad = salas.size();   
       for (int i = 0; i<cantidad; i++){
@@ -118,7 +160,13 @@ public class SalaDAO {
       return null;
   }
   
-  public ArrayList<Sala> cargarSalasVerificacion() throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<Sala> cargarSalasVerificacion() throws SQLException, ClassNotFoundException{
       resultadoConsulta = ConexionSQL.createConsult("exec cargarSalas;");
       ArrayList <Sala> salas = new ArrayList<Sala>();
       while (resultadoConsulta.next()){
@@ -128,7 +176,13 @@ public class SalaDAO {
       return salas;
   }
   
-  public ArrayList<String> cargarSalas() throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public ArrayList<String> cargarSalas() throws SQLException, ClassNotFoundException{
       resultadoConsulta = ConexionSQL.createConsult("exec cargarSalas;");
       ArrayList <String> salas = new ArrayList<String>();
       while (resultadoConsulta.next()){
@@ -138,7 +192,15 @@ public class SalaDAO {
       return salas;
   }
   
-  public boolean agregarHorario(Sala sala, Horario horario) throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @param sala
+     * @param horario
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public boolean agregarHorario(Sala sala, Horario horario) throws SQLException, ClassNotFoundException{
       try{
         CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call agregarHorarioSala"
           + "(?,?)}");
@@ -152,7 +214,14 @@ public class SalaDAO {
     return true;    
   }
   
-  public boolean idModificar(Sala sala) throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @param sala
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public boolean idModificar(Sala sala) throws SQLException, ClassNotFoundException{
       try{
           CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call guardarID"
           + "(?)}");
@@ -165,17 +234,32 @@ public class SalaDAO {
       return true;
   }
   
+    /**
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public boolean idEliminar() throws SQLException, ClassNotFoundException{
       try{
-          CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{exec eliminarID}");
+          CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call elimiID}");
           entry.execute();
       }
       catch(ClassNotFoundException | SQLException e){
+          System.out.print(e);
           return false;
       }
       return true;
   }
-  public boolean modificarSalaUbicacion(Sala sala) throws SQLException, ClassNotFoundException{
+
+    /**
+     *
+     * @param sala
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public boolean modificarSalaUbicacion(Sala sala) throws SQLException, ClassNotFoundException{
       try{
           CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call modificarSalaUbicacion"
           + "(?)}");
@@ -189,6 +273,13 @@ public class SalaDAO {
       return true;
   }
   
+    /**
+     *
+     * @param recurso
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public boolean modificarSalaRecurso(Recurso recurso) throws SQLException, ClassNotFoundException{
       try{
           CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call modificarSalaRecurso"
@@ -201,7 +292,15 @@ public class SalaDAO {
       }
       return true;
   }
-      public boolean modificarSalaEstado(Estado estado) throws SQLException, ClassNotFoundException{
+
+    /**
+     *
+     * @param estado
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public boolean modificarSalaEstado(Estado estado) throws SQLException, ClassNotFoundException{
       try{
           CallableStatement entry = ConexionSQL.getConexionSQL().prepareCall("{call modificarSalaEstado"
           + "(?)}");
@@ -214,5 +313,3 @@ public class SalaDAO {
       return true;
   }
 }
-
-

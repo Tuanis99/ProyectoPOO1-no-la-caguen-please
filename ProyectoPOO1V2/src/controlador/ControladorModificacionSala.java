@@ -27,6 +27,7 @@ import vista.ModificarSala;
  * @author luisg
  */
 public class ControladorModificacionSala implements ActionListener{
+
     public SeleccionModificar vista;
     public SalaDAO dao;
     public Sala modelo;
@@ -34,6 +35,10 @@ public class ControladorModificacionSala implements ActionListener{
     public Estado modelo3;
     public ModificarSala vista2;
     
+    /**
+     *
+     * @param pVista
+     */
     public ControladorModificacionSala (SeleccionModificar pVista){
         vista = pVista;
         dao = new SalaDAO();
@@ -43,6 +48,10 @@ public class ControladorModificacionSala implements ActionListener{
         this.vista.btnVolver.addActionListener(this);
     }
     
+    /**
+     *
+     * @param e
+     */
     public void actionPerformed (ActionEvent e){
         try{
             switch(e.getActionCommand()){
@@ -57,7 +66,6 @@ public class ControladorModificacionSala implements ActionListener{
                     break;
                 case "Volver":
                     cerrarVentanaSeleccionModificar();
-                    dao.idEliminar();
                     break;
                 default:
                     break;
@@ -68,7 +76,12 @@ public class ControladorModificacionSala implements ActionListener{
       }
   }
         
-  public void modificarUbicacion() throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void modificarUbicacion() throws SQLException, ClassNotFoundException{
       String ubicacion = vista.txtUbicacion.getText();
       modelo = new Sala(ubicacion);
       boolean salaActual = dao.modificarSalaUbicacion(modelo);
@@ -78,7 +91,13 @@ public class ControladorModificacionSala implements ActionListener{
          JOptionPane.showMessageDialog(vista, "Ha ocuriido un error de conexion");
       }
   }
-  public void modificarRecursos() throws SQLException, ClassNotFoundException{
+
+    /**
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void modificarRecursos() throws SQLException, ClassNotFoundException{
       int recurso = vista.cbxRecursos.getSelectedIndex();
       modelo2 = new Recurso(recurso);
       boolean recursoActual = dao.modificarSalaRecurso(modelo2);
@@ -88,6 +107,12 @@ public class ControladorModificacionSala implements ActionListener{
           JOptionPane.showMessageDialog(vista, "Ha ocuriido un error de conexion");
       }
   }
+
+    /**
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public void modificarEstado() throws SQLException, ClassNotFoundException{
       int estado = vista.cbxEstado.getSelectedIndex();
       modelo3 = new Estado(estado);
@@ -99,7 +124,10 @@ public class ControladorModificacionSala implements ActionListener{
       }
   }
   
-  public void cargarCombo(){
+    /**
+     *
+     */
+    public void cargarCombo(){
     try {
         ArrayList<String> recursos = dao.cargarComboRecursos();
         for (int i = 0; i < recursos.size(); i++) {
@@ -112,6 +140,9 @@ public class ControladorModificacionSala implements ActionListener{
         }
   }
   
+    /**
+     *
+     */
     public void cargarComboEstado(){
     try {
         ArrayList<String> estados = dao.cargarComboEstado();
@@ -124,13 +155,26 @@ public class ControladorModificacionSala implements ActionListener{
             System.out.println(e);
         }
   }
-    
-  public void cerrarVentanaSeleccionModificar() {
+
+    /**
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void eliminarTemp() throws SQLException, ClassNotFoundException{
+        dao.idEliminar();
+  }
+
+    /**
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void cerrarVentanaSeleccionModificar() throws SQLException, ClassNotFoundException{
     Menu menuVista = new Menu();
     ControladorGestionador controladorMenu = new ControladorGestionador(menuVista);
     controladorMenu.vista.setVisible(true);
     this.vista.setVisible(false);
-    controladorMenu.vista.setLocationRelativeTo(null); 
-    
+    controladorMenu.vista.setLocationRelativeTo(null);
   }
 }

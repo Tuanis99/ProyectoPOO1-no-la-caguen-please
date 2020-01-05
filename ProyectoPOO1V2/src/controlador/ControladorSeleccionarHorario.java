@@ -6,6 +6,7 @@
 package controlador;
 
 import dao.SalaDAO;
+import gestionador.ControladorGestionador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Horario;
 import modelo.Sala;
+import vista.Menu;
 import vista.SeleccionarHorario;
 
 /**
@@ -32,6 +34,7 @@ public class ControladorSeleccionarHorario implements ActionListener{
         vista = pVista;
         dao = new SalaDAO();
         this.vista.btnAceptar.addActionListener(this);
+        this.vista.btnVolver.addActionListener(this);
     }
     
     public void actionPerformed (ActionEvent e){
@@ -39,6 +42,10 @@ public class ControladorSeleccionarHorario implements ActionListener{
             switch (e.getActionCommand()){
                 case "Aceptar":
                     agregarHorario();
+                    break;
+                case "Volver":
+                    cerrarVentanaSeleccionarHorario();
+                    break;
                 default:
                     break;
             }
@@ -61,7 +68,7 @@ public class ControladorSeleccionarHorario implements ActionListener{
             JOptionPane.showMessageDialog(vista, "El horario ha sido ingresada correctamente");
         }
         else{
-            JOptionPane.showMessageDialog(vista, "Ha ocurrido un error de conexión");
+            JOptionPane.showMessageDialog(vista, "No puede seleccionarse el mismo horario para la misma sala");
         }
     }
     
@@ -104,5 +111,13 @@ public class ControladorSeleccionarHorario implements ActionListener{
         } catch (Exception e) {
             System.out.println(e);
         }
+  }
+    
+    public void cerrarVentanaSeleccionarHorario(){
+      Menu menuVista = new Menu();
+      ControladorGestionador controladorMenu = new ControladorGestionador(menuVista);
+      controladorMenu.vista.setVisible(true);
+      this.vista.setVisible(false);
+      controladorMenu.vista.setLocationRelativeTo(null); 
   }
 }
